@@ -1,1 +1,43 @@
-<p>header works!</p>
+<form [formGroup]="filtersForm" class="navbar-filters d-flex align-items-center gap-3">
+  <!-- Search -->
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search products..."
+    formControlName="searchText"
+     
+  />
+  <!-- <button class="btn btn-primary" (click)="applyFilters()">Search</button> -->
+
+  <!-- Category -->
+  <select class="form-select" formControlName="selectedCategory">
+     <option value="">All Categories</option>
+  <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+  </select>
+
+  <!-- Price -->
+  Price:
+  <input
+    type="range"
+    class="form-range"
+    min="0"
+    max="100000"
+    step="100"
+    formControlName="maxPrice"
+  />
+  <span>{{ filtersForm.get('maxPrice')?.value }}</span>
+
+  <!-- Sort -->
+  <label class="form-label fw-bold">Sort By</label>
+  <select class="form-select" formControlName="sortBy">
+    <option value="">Select</option>
+    <option value="lowToHigh">Price: Low to High</option>
+    <option value="highToLow">Price: High to Low</option>
+    <option value="newest">Newest First</option>
+  </select>
+
+  <!-- Apply Filters -->
+  <button type="button" class="btn btn-primary" (click)="applyFilters()">
+    Apply Filters
+  </button>
+</form>
