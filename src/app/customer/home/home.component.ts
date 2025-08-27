@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   products: Product[] = [];
   allProducts: Product[] = [];
   cart: Product[] = [];
-
+  quantity:number=1;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   // Map API response to Product object
   private mapProduct(p: any): Product {
     return {
-      id: p.productId,
+      productId: p.productId,
       title: p.title,
       description: p.description,
       quantity: p.availableQuantity,
@@ -93,22 +93,31 @@ onFiltersChanged(filters: any): void {
 applyFrontendSort(sortParam: string) {
   if (sortParam === 'priceAsc') this.products.sort((a, b) => a.price - b.price);
   if (sortParam === 'priceDesc') this.products.sort((a, b) => b.price - a.price);
-  if (sortParam === 'newest') this.products.sort((a, b) => b.id - a.id); // or use creation date if available
+  if (sortParam === 'newest') this.products.sort((a, b) => b.productId - a.productId); // or use creation date if available
 }
 
 
   // Add product to cart
   addToCart(product: Product): void {
-    if (!product?.id) {
-      console.error('Invalid product ID:', product);
-      return;
-    }
-
-    this.cartService.addToCart(product.id, 1).subscribe({
-      next: () => alert(product.title + ' added to cart!'),
-      error: (err) => alert('Failed to add to cart: ' + (err?.message || 'Unknown error'))
-    });
+  if (!product?.productId) {
+    console.error('Invalid product ID:', product);
+    return;
   }
+
+  // Replace this with actual logged-in user's ID
+  const userId = 1; // TODO: get from AuthService
+
+  const cartItemDTO = {
+    userId: userId,
+    productId: product.productId,
+    quantity: this.quantity
+  };
+
+  this.cartService.addToCart(cartItemDTO).subscribe({
+    next: () => alert(`${product.title} added to cart!`),
+    error: (err) => alert('Failed to add to cart: ' + (err?.error?.message || 'Unknown error'))
+  });
+}
 
   // Navigate to product detail page
   viewDetailsEvent(productID: number): void {

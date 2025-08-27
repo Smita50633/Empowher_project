@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,7 @@ categories = [
 
   @Output() filtersChanged = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,private router: Router) {}
 
   ngOnInit(): void {
     this.filtersForm = this.fb.group({
@@ -42,5 +43,8 @@ categories = [
   private emitFilters(values: any) {
     console.log('Filters emitted:', values);  
     this.filtersChanged.emit(values);
+  }
+  goToCart() {
+    this.router.navigate(['/customer/cart']);
   }
 }

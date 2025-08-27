@@ -10,7 +10,7 @@
 <app-header (filtersChanged)="onFiltersChanged($event)"></app-header>
 <div class="row">
   <div *ngFor="let a of products" class="col-md-4 mb-3">
-    <app-card [product]="a" (viewDetails)="viewDetailsEvent($event)" [addToCart]="addToCart"></app-card>
+    <app-card [product]="a" (viewDetails)="viewDetailsEvent($event)" ></app-card>
   </div>
 </div> 
 
